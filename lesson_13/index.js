@@ -51,5 +51,3 @@ function absDiff(a) {
 
 	return (b) => Math.abs(a - b);
 }
-
-console.log(absDiff(3)(7));
