@@ -39,7 +39,8 @@ function removeKeys2 ( obj, arr ) {
 		}
 	}
 
-	let obj1 = obj;
+	let obj1 = Object.assign({}, obj);
+
 
 	return obj1;
 }
@@ -50,3 +51,5 @@ function absDiff(a) {
 
 	return (b) => Math.abs(a - b);
 }
+
+console.log(absDiff(3)(7));
