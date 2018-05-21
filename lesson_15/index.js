@@ -23,18 +23,21 @@ function init ( arrObj, n ) {
 
 function listen() {
 
-	let ul = document.querySelector('ul');
+	const btn = document.getElementsByTagName("button");
 
-	if (ul) {
+	btn.addEventListener('click', function() {
 
-		document.body.removeChild(ul);
+		let ul = document.querySelector('ul');
 
-		return console.log(true);
+		if (ul) {
 
-	} else {
+			document.body.removeChild(ul);
 
-		return console.log(false);
-	}
+			return true;
+
+		} else {
+
+			return false;
+		}
+	});
 }
-
-document.querySelector('button').addEventListener('click', listen);
