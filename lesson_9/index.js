@@ -1,1 +1,1 @@
-console.log ("Abrosenkov Andrey");
+console.log ("Абросенков Андрей");
