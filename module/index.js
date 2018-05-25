@@ -108,3 +108,18 @@ return result;
 
 
 // ===========================================___Шестое задание___======================================= 
+
+function strangeSearch (arr) {
+	for (let i = 0; i < arr.length; i += 1) {
+
+		let div = document.createElement('div');
+
+		let input = document.createElement('input');
+
+		input.setAttribute('type', 'number');
+
+		input.setAttribute('value', '0');
+
+		
+	}
+}
