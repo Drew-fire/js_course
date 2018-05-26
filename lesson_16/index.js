@@ -131,7 +131,7 @@ for (x = 1; x <= n; x += 1) {
 
 		document.getElementById('x2').addEventListener('click', function(){
 
-			speed = speed / 2;
+			speed = 500;
 
 			clearInterval(interval);
 
@@ -141,7 +141,7 @@ for (x = 1; x <= n; x += 1) {
 
 		document.getElementById('x3').addEventListener('click', function(){
 
-			speed = speed / 3;
+			speed = 336;
 
 			clearInterval(interval);
 
