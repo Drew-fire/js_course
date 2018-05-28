@@ -110,6 +110,7 @@ return result;
 // ===========================================___Шестое задание___======================================= 
 
 function strangeSearch (arr) {
+
 	for (let i = 0; i < arr.length; i += 1) {
 
 		let div = document.createElement('div');
@@ -120,6 +121,31 @@ function strangeSearch (arr) {
 
 		input.setAttribute('value', '0');
 
-		
+		div.appendChild(input);
+
+		div.appendChild(document.createTextNode(`${arr[i]}`));
+
+		document.body.appendChild(div);
+
 	}
+
+	let button = document.createElement('button');
+
+		button.setAttribute('id', 'go');
+
+		let btnText = document.createTextNode('Search');
+
+		button.appendChild(btnText);
+
+		document.body.appendChild(button);
+
+
+			document.getElementById('go').addEventListener('click', function(){
+
+					window.location.href = `https://www.youtube.com`;
+
+			});
+
 }
+
+strangeSearch ([ 'arr', 'value', 'object' ]);
