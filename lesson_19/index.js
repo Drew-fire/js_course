@@ -1,23 +1,67 @@
-const checkAuth = (callback) => {
-  setTimeout(() => {
-    callback( {isAuth: true} );
-  }, 2000);
-};
+const checkAuth = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ isAuth: true});
+    }, 2000);
+  })
+}
 
 
-const getUser = (authInfo, callback) => {
-  if (!authInfo.isAuth) {
-    callback(null);
+const getUser = (authInfo) => {
+  return new Promise((resolve, reject) => {
+    if (!authInfo.isAuth) {
+    reject(null);
     return;
   }
+
   setTimeout(() => {
-    callback( {name: 'Max'} );
+    resolve( {name: 'Max'} );
   }, 2000);
 };
 
+////////////////////////вызов
 
-checkAuth((authInfo) => {
-  getUser(authInfo, (user) => {
-    console.log(user.name);
-  });
-});
+// getUser ()
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((error) => {
+//     console.log('==========================');
+//     console.log('error');
+//     console.log('==========================');
+//   })
+
+
+// checkAuth((authInfo) => {
+//   getUser(authInfo, (user) => {
+//     return (user.name);
+//   });
+// });
+
+
+// checkAuth()
+//   .then((res) => {
+//     console.log('==================================');
+//      console.log('first then');
+//       console.log('==================================');
+//     return getUser(res);
+//   });
+
+//   .then((res) => {
+//     console.log('==================================');
+//      console.log('second then');
+//       console.log('==================================');
+//     return getUser(res);
+
+
+//////////////////////////////////promise.all
+    // Promise.all ([
+    //   checkAuth(),
+    //   getUser ({ isAuth: true}),
+    //   ])
+
+    // .then (() => {
+    //   console.log('==================================');
+    //   console.log('res');
+    //   console.log('==================================');
+    // });
