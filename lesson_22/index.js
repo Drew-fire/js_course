@@ -20,3 +20,16 @@ locationApi.getMyIp()
   .catch((eror) => {
     console.log(eror);
   });
+
+    weather.getMyWeather()
+    .then((res) => {
+      return weather.setWeather(res);
+
+    })
+    .catch((eror) => {
+      console.log(eror);
+    });
+
+    // btn2.addEventListener('click', () => {
+
+    // });
