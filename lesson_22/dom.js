@@ -17,7 +17,7 @@ export default class Dom {
 
   setCoordinates(coordinates) {
     // this.location.innerHTML = coordinates;
-    city.innerHTML = coordinates.city;
+    city.value = coordinates.city;
     // this.city.innerHTML = res.city;
 
   }
