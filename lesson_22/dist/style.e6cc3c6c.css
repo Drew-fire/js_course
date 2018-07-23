@@ -1,0 +1,11 @@
+body {
+    background: lightgrey;
+}
+
+#preloader {
+    font-size: 10px;
+}
+
+#city {
+    font-size: 25px;
+}
