@@ -1061,7 +1061,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _maskInput = require('./node_modules/mask-input');
+var _maskInput = require('mask-input');
 
 var _maskInput2 = _interopRequireDefault(_maskInput);
 
@@ -1071,28 +1071,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var UIController = function () {
     function UIController() {
-        var _this = this;
-
         _classCallCheck(this, UIController);
 
         this.addInput();
         this.addNameInp();
         this.addButton();
-        this.preloader = document.getElementById('preloader');
-        this.button.addEventListener('click', function () {
-            var regExp = /\-/g;
-            if (_this.inpCard.value !== _this.cardValue) {
-                _this.cardValue = _this.inpCard.value.replace(regExp, '');
-                // console.log(this.cardValue);
-                return fetch('https://api.bincodes.com/cc/?format=json&api_key=d96ca493f5be297f8c304a87edcdf6a8&cc=' + _this.cardValue).then(function (res) {
-                    if (res.status === 200) {
-                        return res.json();
-                    } else {
-                        return Promise.reject(res.status);
-                    }
-                });
-            }
-        });
     }
 
     _createClass(UIController, [{
@@ -1163,64 +1146,20 @@ var UIController = function () {
             }
         }
     }, {
-        key: 'clickBtn',
-        value: function clickBtn(cardValue) {
-            var _this2 = this;
-
-            this.button.addEventListener('click', function () {
-                if (cached) {
-                    _this2.addTable(JSON.parse(cached));
-                } else {
-                    _this2.loader.style.display = 'inline';
-                    getButton(cardValue).then(function (result) {
-                        _this2.addTable(result);
-                        _this2.loader.style.display = 'none';
-                    });
-                }
-                var cached = localStorage.getItem(buleanCard);
-            });
-        }
-    }, {
-        key: 'removeTable',
-        value: function removeTable() {
-            if (this.table) {
-                this.table.remove();
+        key: 'getBtn',
+        value: function getBtn() {
+            var regExp = /\-/g;
+            if (this.inpCard.value !== this.cardValue) {
+                this.cardValue = this.inpCard.value.replace(regExp, '');
+                // console.log(this.cardValue);
+                return fetch('https://api.bincodes.com/cc/?format=json&api_key=d96ca493f5be297f8c304a87edcdf6a8&cc=' + this.cardValue).then(function (res) {
+                    if (res.status === 200) {
+                        return res.json();
+                    } else {
+                        return Promise.reject(res.status);
+                    }
+                });
             }
-        }
-    }, {
-        key: 'addTable',
-        value: function addTable(obj) {
-            this.removeTable();
-            this.table = document.createElement('table');
-            this.table.id = 'table';
-
-            for (var i in obj) {
-                var tr = document.createElement('tr');
-                var name = document.createElement('td');
-                var value = document.createElement('td');
-                name.innerHTML = i[0].toUpperCase() + i.slice(1);
-                value.innerHTML = obj[i] || 'Unknown';
-                tr.appendChild(name);
-                tr.appendChild(value);
-                this.table.appendChild(tr);
-            }
-
-            document.body.appendChild(this.table);
-            this.clearBtn();
-        }
-    }, {
-        key: 'clearBtn',
-        value: function clearBtn() {
-            var _this3 = this;
-
-            this.clearBtn = document.getElementById('clearBtn');
-            this.clearBtn.id = 'clear';
-            this.clearBtn.textContent = 'clear';
-            this.clearBtn.onclick = function () {
-                _this3.table.remove();
-                _this3.cardCache = {};
-                _this3.clearBtn.remove();
-            };
         }
     }]);
 
@@ -1228,17 +1167,114 @@ var UIController = function () {
 }();
 
 exports.default = UIController;
-},{"./node_modules/mask-input":"node_modules\\mask-input\\lib\\maskInput.js"}],"index.js":[function(require,module,exports) {
+},{"mask-input":"node_modules\\mask-input\\lib\\maskInput.js"}],"card_data.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CardData = function () {
+  function CardData() {
+    _classCallCheck(this, CardData);
+
+    this.inpCard = document.getElementById('inp1');
+    this.inpName = document.getElementById('name');
+    this.preloader = document.getElementById('preloader');
+  }
+
+  _createClass(CardData, [{
+    key: 'showPreloader',
+    value: function showPreloader() {
+      this.inpCard.setAttribute('disabled', 'true');
+      this.inpName.setAttribute('disabled', 'true');
+      this.preloader.style.display = 'inline';
+    }
+  }, {
+    key: 'hidePreloader',
+    value: function hidePreloader() {
+      this.inpCard.removeAttribute('disabled');
+      this.inpName.removeAttribute('disabled');
+      this.preloader.style.display = 'none';
+    }
+  }, {
+    key: 'setTable',
+    value: function setTable(obj) {
+      if (this.table) {
+        this.table.remove();
+        this.clearBtn.remove();
+      }
+      this.table = document.createElement('table');
+      this.table.setAttribute('id', 'tab');
+      for (var i in obj) {
+        var tr = document.createElement('tr');
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+        td1.textContent = i.charAt(0).toUpperCase() + i.substr(1);
+        td2.textContent = obj[i] || "Unknown";
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        this.table.appendChild(tr);
+      }
+      document.body.appendChild(this.table);
+      this.createClearBtn();
+    }
+  }, {
+    key: 'createClearBtn',
+    value: function createClearBtn() {
+      var _this = this;
+
+      this.clearBtn = document.getElementById('clearBtn');
+      this.clearBtn.id = 'clear';
+      this.clearBtn.textContent = 'clear';
+      this.clearBtn.onclick = function () {
+        _this.table.remove();
+        _this.cardCache = {};
+        _this.clearBtn.remove();
+      };
+    }
+  }]);
+
+  return CardData;
+}();
+
+exports.default = CardData;
+},{}],"index.js":[function(require,module,exports) {
 'use strict';
 
 var _ui_controller = require('./ui_controller');
 
 var _ui_controller2 = _interopRequireDefault(_ui_controller);
 
+var _card_data = require('./card_data');
+
+var _card_data2 = _interopRequireDefault(_card_data);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var uiController = new _ui_controller2.default();
-},{"./ui_controller":"ui_controller.js"}],"C:\\Users\\Андрей\\AppData\\Roaming\\npm\\node_modules\\parcel\\src\\builtins\\hmr-runtime.js":[function(require,module,exports) {
+var cardData = new _card_data2.default();
+
+var button = document.getElementById('btn');
+
+button.addEventListener('click', function () {
+    button.setAttribute('disabled', 'true');
+    cardData.showPreloader();
+    uiController.getBtn().then(function (res) {
+        cardData.setTable(res);
+        cardData.hidePreloader();
+        button.removeAttribute('disabled');
+    }).catch(function (rej) {
+        cardData.hidePreloader();
+        button.removeAttribute('disabled');
+        alert(rej);
+    });
+});
+},{"./ui_controller":"ui_controller.js","./card_data":"card_data.js"}],"C:\\Users\\Андрей\\AppData\\Roaming\\npm\\node_modules\\parcel\\src\\builtins\\hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -1267,7 +1303,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '56069' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '62142' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
