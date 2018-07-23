@@ -1,26 +1,10 @@
-import MaskInput from './node_modules/mask-input';
+import MaskInput from 'mask-input';
 
 export default class UIController {
     constructor () {
         this.addInput();
         this.addNameInp();
         this.addButton();
-        this.preloader = document.getElementById('preloader');
-        this.button.addEventListener('click', () => {
-            let regExp = /\-/g;
-                   if (this.inpCard.value !== this.cardValue) {
-                    this.cardValue = this.inpCard.value.replace(regExp, '');
-                    // console.log(this.cardValue);
-            return fetch(`https://api.bincodes.com/cc/?format=json&api_key=d96ca493f5be297f8c304a87edcdf6a8&cc=${this.cardValue}`)
-                .then(res => {
-                    if(res.status === 200) {
-                        return res.json();
-                    } else {
-                        return Promise.reject(res.status);
-                    }
-                })
-        }
-        });
     }
     
     
@@ -86,59 +70,20 @@ export default class UIController {
             this.button.setAttribute('disabled', 'true');
         }
     }
-
-    clickBtn (cardValue) {
-        this.button.addEventListener('click', () => {
-            if (cached) {
-                this.addTable(JSON.parse(cached));
-              } else {
-                this.loader.style.display = 'inline';
-                getButton(cardValue)
-                  .then((result) => {
-                    this.addTable(result);
-                    this.loader.style.display = 'none';
-                  });
-              }
-            const cached = localStorage.getItem(buleanCard);
-        });
-    }
-
-    removeTable() {
-        if (this.table) {
-          this.table.remove();
-        }
-      }
     
-      addTable(obj) {
-        this.removeTable();
-        this.table = document.createElement('table');
-        this.table.id = 'table';
-    
-        for (const i in obj) {
-          const tr = document.createElement('tr');
-          const name = document.createElement('td');
-          const value = document.createElement('td');
-          name.innerHTML = i[0].toUpperCase() + i.slice(1);
-          value.innerHTML = obj[i] || 'Unknown';
-          tr.appendChild(name);
-          tr.appendChild(value);
-          this.table.appendChild(tr);
-        }
-    
-        document.body.appendChild(this.table);
-        this.clearBtn();
-      }
-
-      clearBtn() {
-            this.clearBtn = document.getElementById('clearBtn');
-            this.clearBtn.id = 'clear';
-            this.clearBtn.textContent = 'clear';
-            this.clearBtn.onclick = () => {
-            this.table.remove();
-            this.cardCache = {};
-            this.clearBtn.remove();
-
+    getBtn () {
+            let regExp = /\-/g;
+                   if (this.inpCard.value !== this.cardValue) {
+                    this.cardValue = this.inpCard.value.replace(regExp, '');
+                    // console.log(this.cardValue);
+            return fetch(`https://api.bincodes.com/cc/?format=json&api_key=d96ca493f5be297f8c304a87edcdf6a8&cc=${this.cardValue}`)
+                .then(res => {
+                    if(res.status === 200) {
+                        return res.json();
+                    } else {
+                        return Promise.reject(res.status);
+                    }
+                })
         }
     }
-
 }
