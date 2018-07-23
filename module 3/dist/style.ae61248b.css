@@ -1,0 +1,18 @@
+button {
+    outline: none;
+    /* background: rgba(255, 0, 0, 0.4); */
+    /* border: 2px solid rgba(255, 0, 0, 0.4); */
+    font-size: 20px;
+    color: black;
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+button:active {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2) inset;
+}
+
+#preloader {
+    display: none;
+}
